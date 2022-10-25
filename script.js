@@ -1,3 +1,13 @@
+const buttons = document.querySelectorAll("button");
+const results = document.querySelector(".results");
+const computerChoicePara = document.querySelector(".computerChoicePara");
+const playerChoicePara = document.querySelector(".playerChoicePara");
+const roundResultPara = document.querySelector(".roundResultPara");
+const scores = document.querySelector(".scores");
+
+let playerScore = 0;
+let computerScore = 0;
+
 function getComputerChoice() {
     let randomNum = Math.floor(Math.random() * 3);
 
@@ -11,74 +21,73 @@ function getComputerChoice() {
         computerChoice = "scissors";
     }
 
+    computerChoicePara.textContent = `The computer selected ${computerChoice}.`;
+
     return computerChoice;
 }
 
-function getPlayerChoice() {
-    let playerChoice = prompt("Rock, Paper, or Scissors?");
-    playerChoice = playerChoice.toLowerCase();
+function getPlayerChoice(event) {
+    let buttonClass = event.target.className;
+    let playerChoice;
+
+    switch (buttonClass) {
+        case "rockButton":
+            playerChoice = "rock";
+            break;
+        case "paperButton":
+            playerChoice = "paper";
+            break;
+        case "scissorsButton":
+            playerChoice = "scissors";
+            break;
+    }
+
+    playerChoicePara.textContent = `You selected ${playerChoice}.`;
+
     return playerChoice;
 }
 
-function playRound(playerSelection, computerSelection) {
+function playRound(playerChoice, computerChoice) {
     let result;
 
     if (
-        (playerSelection === "rock" && computerSelection === "paper") ||
-        (playerSelection === "paper" && computerSelection === "scissors") ||
-        (playerSelection === "scissors" && computerSelection === "rock")
+        (playerChoice === "rock" && computerChoice === "paper") ||
+        (playerChoice === "paper" && computerChoice === "scissors") ||
+        (playerChoice === "scissors" && computerChoice === "rock")
     ) {
-        result = "you lose";
+        result = "You've lost this round.";
     } else if (
-        (playerSelection === "paper" && computerSelection === "rock") ||
-        (playerSelection === "scissors" && computerSelection === "paper") ||
-        (playerSelection === "rock" && computerSelection === "scissors")
+        (playerChoice === "paper" && computerChoice === "rock") ||
+        (playerChoice === "scissors" && computerChoice === "paper") ||
+        (playerChoice === "rock" && computerChoice === "scissors")
     ) {
-        result = "you win";
-    } else if (playerSelection === computerSelection) {
-        result = "tie";
-    } else {
-        result = "oops";
+        result = "You've won this round.";
+    } else if (playerChoice === computerChoice) {
+        result = "It's a tie!";
     }
 
-    return result;
+    roundResultPara.textContent = result;
 }
 
-//calls the playRound function to play five rounds while keeping score and then reports a winner at the end of the game
-function game() {
-    let player = 0;
-    let computer = 0;
-    let playerChoice;
-    let computerChoice;
+buttons.forEach((button) => {
+    button.addEventListener("click", function playGame(event) {
+        playRound(getPlayerChoice(event), getComputerChoice());
 
-    for (let rounds = 0; rounds < 5; rounds++) {
-        playerChoice = getPlayerChoice();
-        computerChoice = getComputerChoice();
-
-        console.log(computerChoice);
-
-        let result = playRound(playerChoice, computerChoice);
-        console.log(result);
-
-        if (result === "you lose") {
-            computer++;
-        } else if (result === "you win") {
-            player++;
-        } else if (result === "tie") {
-            computer++;
-            player++;
+        if (roundResultPara.textContent === "You've won this round.") {
+            playerScore++;
+        } else if (roundResultPara.textContent === "You've lost this round.") {
+            computerScore++;
         }
-    }
 
-    console.log(`Player: ${player} \nComputer: ${computer}`);
+        scores.textContent = `Player's score: ${playerScore} \nComputer's score: ${computerScore}
+        `;
 
-    if (player > computer) {
-        console.log("You've won the game! Congrats!");
-    } else if (player < computer) {
-        console.log("I'm sorry, but you've lost the game. Try again.");
-    } else {
-        console.log("It's a tie!");
-    }
-}
-
-game();
+        if (playerScore === 5) {
+            roundResultPara.textContent = "";
+            scores.textContent = "You won the game!";
+        } else if (computerScore === 5) {
+            roundResultPara.textContent = "";
+            scores.textContent = "Sorry, you lost. Try again!";
+        }
+    });
+});
