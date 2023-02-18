@@ -1,0 +1,154 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
+
+body {
+    height: 100vh;
+    background-color: #37323e;
+    font-family: "Fredoka One", cursive;
+    color: #ca3cff;
+    padding: 1em;
+    overflow-y: hidden;
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 3em;
+}
+
+.hidden {
+    display: none;
+}
+
+.invisible {
+    opacity: 0;
+}
+
+.updown {
+    animation: 0.75s updown ease-in-out infinite;
+}
+
+.redden {
+    animation: 0.1s redden forwards;
+    animation-delay: 0.1s;
+}
+
+.shake {
+    animation: 0.15s shake ease-in-out infinite;
+}
+
+.intro,
+.game-ui,
+.gameOver {
+    width: 100%;
+    height: 100%;
+}
+
+.game-ui,
+.gameOver {
+    justify-content: center;
+    gap: 5em;
+}
+
+.buttons {
+    width: 80%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8em;
+}
+
+.results {
+    text-align: center;
+    width: 80%;
+}
+
+.results p {
+    width: 100%;
+}
+
+.game-ui h1 {
+    position: absolute;
+}
+
+h1 {
+    font-size: 10rem;
+}
+
+p {
+    font-size: 2rem;
+}
+
+span {
+    position: relative;
+}
+
+button {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url(../img/blobanimation.svg);
+    cursor: pointer;
+    font-size: 2rem;
+    font-weight: bold;
+    border: none;
+    width: 13rem;
+    height: 13rem;
+    position: relative;
+    font-family: inherit;
+    transition: 0.5s ease;
+}
+
+button:hover {
+    transform: scale3d(1.2, 1.2, 1);
+}
+
+button:active {
+    transform: scaleZ(1);
+}
+
+@keyframes updown {
+    from {
+        color: #00c9cc;
+        top: 0px;
+    }
+
+    50% {
+        top: 50px;
+    }
+
+    to {
+        color: hsl(299, 100%, 40%);
+        top: 0px;
+    }
+}
+
+@keyframes redden {
+    from {
+        color: currentColor;
+    }
+
+    to {
+        color: #ef233c;
+    }
+}
+
+@keyframes shake {
+    from {
+        transform: translate(0);
+    }
+
+    25% {
+        transform: translate(-2px, 1px);
+    }
+
+    50% {
+        transform: translate(0px);
+    }
+
+    75% {
+        transform: translate(2px, 1px);
+    }
+
+    to {
+        transform: translate(0);
+    }
+}

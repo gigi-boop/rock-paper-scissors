@@ -4,25 +4,33 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="./styles/myreset.css" rel="stylesheet" />
+        <link href="./styles/style.css" rel="stylesheet" />
         <title>Rock, Paper, Scissors</title>
     </head>
     <body>
-        <button class="rockButton">Rock</button
-        ><button class="paperButton">Paper</button
-        ><button class="scissorsButton">Scissors</button>
-        <div
-            class="results"
-            style="
-                padding: 1px;
-                border: 1px solid red;
-                width: 700px;
-                min-height: 300px;
-            "
-        >
-            <p class="playerChoicePara"></p>
-            <p class="computerChoicePara"></p>
-            <p class="roundResultPara"></p>
-            <p class="scores"></p>
+        <div class="intro flex">
+            <h1 class="introHeading">Welcome!</h1>
+            <p>Care to play a game of rock, paper, scissors with me?</p>
+            <button class="startButton">Yes</button>
+        </div>
+        <div class="game-ui flex hidden">
+            <div class="buttons flex">
+                <button class="rockButton">Rock</button
+                ><button class="paperButton">Paper</button
+                ><button class="scissorsButton">Scissors</button>
+            </div>
+            <div class="results invisible">
+                <p class="playerChoicePara">.</p>
+                <p class="computerChoicePara">.</p>
+                <p class="roundResultPara">.</p>
+                <p class="scores">.</p>
+            </div>
+        </div>
+        <div class="gameOver flex hidden">
+            <h1 class="winHeading hidden">You Win!</h1>
+            <h1 class="loseHeading shake hidden">You Lose.</h1>
+            <button class="resetButton" type="reset">Restart?</button>
         </div>
         <script src="./script.js"></script>
     </body>

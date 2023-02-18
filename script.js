@@ -1,12 +1,28 @@
-const buttons = document.querySelectorAll("button");
+const gameUI = document.querySelector(".game-ui");
 const results = document.querySelector(".results");
-const computerChoicePara = document.querySelector(".computerChoicePara");
-const playerChoicePara = document.querySelector(".playerChoicePara");
-const roundResultPara = document.querySelector(".roundResultPara");
-const scores = document.querySelector(".scores");
+const gameOver = document.querySelector(".gameOver");
+
+const introHeading = document.querySelector(".introHeading");
+const winHeading = gameOver.querySelector(".winHeading");
+const loseHeading = gameOver.querySelector(".loseHeading");
 
 let playerScore = 0;
 let computerScore = 0;
+
+function attachEventListeners() {
+    const buttons = document.querySelectorAll(".game-ui button");
+
+    const startButton = document.querySelector(".startButton");
+    const resetButton = document.querySelector(".resetButton");
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => playGame(event));
+    });
+
+    startButton.addEventListener("click", startGame);
+
+    resetButton.addEventListener("click", resetGame);
+}
 
 function getPlayerChoice(event) {
     let buttonClass = event.target.className;
@@ -44,18 +60,26 @@ function getComputerChoice() {
 }
 
 function displayPlayerChoice(playerChoice) {
+    const playerChoicePara = document.querySelector(".playerChoicePara");
+
     playerChoicePara.textContent = `You selected ${playerChoice}.`;
 }
 
 function displayComputerChoice(computerChoice) {
+    const computerChoicePara = document.querySelector(".computerChoicePara");
+
     computerChoicePara.textContent = `The computer selected ${computerChoice}.`;
 }
 
 function displayRoundResult(result) {
+    const roundResultPara = document.querySelector(".roundResultPara");
+
     roundResultPara.textContent = result;
 }
 
 function displayScore() {
+    const scores = document.querySelector(".scores");
+
     scores.textContent = `Player's score: ${playerScore} \nComputer's score: ${computerScore}
     `;
 }
@@ -93,6 +117,7 @@ function calculateRoundWinner(playerChoice, computerChoice) {
 }
 
 function playRound(playerChoice, computerChoice) {
+    results.classList.remove("invisible");
     displayPlayerChoice(playerChoice);
     displayComputerChoice(computerChoice);
     displayRoundResult(calculateRoundWinner(playerChoice, computerChoice));
@@ -105,28 +130,65 @@ function isGameOver() {
 
 function endGame() {
     if (playerScore === 5) {
-        roundResultPara.textContent = "";
-        scores.textContent = "You won the game!";
+        animateHeading(winHeading, "updown");
+        winHeading.classList.remove("hidden");
     } else if (computerScore === 5) {
-        roundResultPara.textContent = "";
-        scores.textContent = "Sorry, you lost. Try again!";
+        animateHeading(loseHeading, "redden");
+        loseHeading.classList.remove("hidden");
     }
 }
 
 function resetGame() {
     playerScore = 0;
     computerScore = 0;
+    winHeading.classList.add("hidden");
+    loseHeading.classList.add("hidden");
+    gameOver.classList.toggle("hidden");
+    gameUI.classList.toggle("hidden");
+    results.classList.add("invisible");
 }
 
 function playGame(event) {
     playRound(getPlayerChoice(event), getComputerChoice());
 
     if (isGameOver()) {
+        gameUI.classList.toggle("hidden");
+        gameOver.classList.toggle("hidden");
         endGame();
-        resetGame();
     }
 }
 
-buttons.forEach((button) => {
-    button.addEventListener("click", () => playGame(event));
-});
+function startGame() {
+    const intro = document.querySelector(".intro");
+
+    intro.classList.toggle("flex");
+    intro.classList.toggle("hidden");
+    gameUI.classList.toggle("hidden");
+}
+
+//Animation------------------------------------------//
+function insertSpans(text, heading) {
+    const span = document.createElement("span");
+    heading.appendChild(span);
+
+    span.textContent = text;
+
+    return span;
+}
+
+function splitHeading(heading, text) {
+    heading.textContent = "";
+
+    return [...text].map((text) => insertSpans(text, heading));
+}
+
+function animateHeading(heading, animation) {
+    const letters = splitHeading(heading, heading.textContent);
+
+    letters.forEach((letter, index) => {
+        setTimeout(() => letter.classList.add(animation), index * 75);
+    });
+}
+
+animateHeading(introHeading, "updown");
+attachEventListeners();
